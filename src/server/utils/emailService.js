@@ -1,6 +1,6 @@
 /**
  * Email Service
- * 
+ *
  * This service handles sending emails using nodemailer.
  * It supports HTML content, templates, and attachments.
  * All emails are designed to be accessible following WCAG 2.1 standards.
@@ -10,20 +10,15 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
-const { ApiError } = require('../middleware/errorHandler');
 
 // Environment variables
 const EMAIL_HOST = process.env.EMAIL_HOST || 'smtp.example.com';
 const EMAIL_PORT = process.env.EMAIL_PORT || 587;
 const EMAIL_USER = process.env.EMAIL_USER || 'user@example.com';
 const EMAIL_PASS = process.env.EMAIL_PASS || 'password';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'LitSpark Brand Solutions <noreply@litspark.com>';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+// Comment out unused variables
+// const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 const TEMPLATE_DIR = process.env.EMAIL_TEMPLATE_DIR || path.join(__dirname, '../templates/emails');
-const DEFAULT_COMPANY_NAME = process.env.DEFAULT_COMPANY_NAME || 'LitSpark Brand Solutions';
-const PRIVACY_POLICY_URL = process.env.PRIVACY_POLICY_URL || `${FRONTEND_URL}/privacy-policy`;
-const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_URL || `${FRONTEND_URL}/unsubscribe`;
-const TERMS_URL = process.env.TERMS_URL || `${FRONTEND_URL}/terms`;
 
 // Create template directory if it doesn't exist
 if (!fs.existsSync(TEMPLATE_DIR)) {
@@ -158,7 +153,7 @@ const DEFAULT_TEMPLATE = `
  * @param {string} templateName - Template name
  * @returns {string} - Template content
  */
-const loadTemplate = (templateName) => {
+const loadTemplate = templateName => {
   // In test environment, return mock templates
   if (process.env.NODE_ENV === 'test') {
     if (templateName === 'verification') {
@@ -280,20 +275,20 @@ const loadTemplate = (templateName) => {
       console.warn(`Template ${templateName} not found, using default template`);
       return DEFAULT_TEMPLATE;
     }
-    
+
     // Return default template for other cases
     return DEFAULT_TEMPLATE;
   }
-  
+
   // In production environment, load from file system
   try {
     const templatePath = path.resolve(__dirname, `../../../templates/emails/${templateName}.html`);
-    
+
     if (!fs.existsSync(templatePath)) {
       console.warn(`Template ${templateName} not found, using default template`);
       return DEFAULT_TEMPLATE;
     }
-    
+
     return fs.readFileSync(templatePath, 'utf8');
   } catch (error) {
     console.error('Error loading template:', error);
@@ -313,14 +308,14 @@ const createTransporter = () => {
     secure: EMAIL_PORT === 465, // true for 465, false for other ports
     auth: {
       user: EMAIL_USER,
-      pass: EMAIL_PASS
+      pass: EMAIL_PASS,
     },
     tls: {
       // Do not fail on invalid certs
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   });
-  
+
   return transporter;
 };
 
@@ -336,9 +331,9 @@ const compileTemplate = (template, data = {}) => {
     const templateData = {
       currentYear: new Date().getFullYear(),
       company: 'LitSpark Brand Solutions',
-      ...data
+      ...data,
     };
-    
+
     // Compile the template
     const compiledTemplate = handlebars.compile(template);
     return compiledTemplate(templateData);
@@ -362,9 +357,9 @@ const compileTemplate = (template, data = {}) => {
  * @param {string} html - HTML content
  * @returns {string} - Plain text content
  */
-const htmlToText = (html) => {
+const htmlToText = html => {
   if (!html) return '';
-  
+
   // Simple HTML to text conversion
   return html
     .replace(/<style[^>]*>.*?<\/style>/gs, '')
@@ -393,26 +388,26 @@ const generatePlainText = htmlToText;
  * @param {Object} options.templateData - Template data
  * @returns {Promise<Object>} - Email send result
  */
-const sendEmail = async (options) => {
+const sendEmail = async options => {
   // Validate required fields
   if (!options.to) {
     throw new Error('Recipient email is required');
   }
-  
+
   if (!options.subject) {
     throw new Error('Email subject is required');
   }
-  
+
   // Set default sender
-  const from = options.from || process.env.EMAIL_FROM || 'noreply@litspark.com';
-  
+  const from = options.from || 'noreply@litspark.com';
+
   // Prepare email options
   const mailOptions = {
     from,
     to: options.to,
-    subject: options.subject
+    subject: options.subject,
   };
-  
+
   // Handle template if provided
   if (options.template) {
     const template = loadTemplate(options.template);
@@ -420,26 +415,26 @@ const sendEmail = async (options) => {
   } else if (options.html) {
     mailOptions.html = options.html;
   }
-  
+
   // Generate plain text version if not provided
   if (!options.text && mailOptions.html) {
     mailOptions.text = htmlToText(mailOptions.html);
   } else if (options.text) {
     mailOptions.text = options.text;
   }
-  
+
   // In test environment, log and return mock result
   if (process.env.NODE_ENV === 'test') {
     console.log('Test environment detected, skipping actual email sending');
     return Promise.resolve({
       messageId: 'test-message-id',
-      envelope: { from: mailOptions.from, to: [mailOptions.to] }
+      envelope: { from: mailOptions.from, to: [mailOptions.to] },
     });
   }
-  
+
   // Create transporter for real environments
   const transporter = createTransporter();
-  
+
   // Send email
   try {
     const info = await transporter.sendMail(mailOptions);
@@ -458,7 +453,7 @@ const sendEmail = async (options) => {
  * @param {string} options.verificationUrl - Verification URL
  * @returns {Promise<Object>} - Email send result
  */
-const sendVerificationEmail = async (options) => {
+const sendVerificationEmail = async options => {
   // Validate required fields
   if (!options.to) {
     throw new Error('Recipient email is required for verification email');
@@ -469,11 +464,11 @@ const sendVerificationEmail = async (options) => {
   if (!options.verificationUrl) {
     throw new Error('Verification URL is required for verification email');
   }
-  
+
   // Load and compile template
   const template = loadTemplate('verification');
   const currentYear = new Date().getFullYear();
-  
+
   // Prepare template data
   const templateData = {
     firstName: options.firstName,
@@ -483,18 +478,18 @@ const sendVerificationEmail = async (options) => {
     termsUrl: options.termsUrl || 'https://litspark.com/terms',
     unsubscribeUrl: options.unsubscribeUrl || 'https://litspark.com/unsubscribe',
     company: options.company || 'LitSpark Brand Solutions',
-    currentYear
+    currentYear,
   };
-  
+
   // Compile template
   const html = compileTemplate(template, templateData);
-  
+
   // Send email
   return sendEmail({
     to: options.to,
     subject: 'Verify Your Email Address',
     html,
-    from: options.from
+    from: options.from,
   });
 };
 
@@ -506,7 +501,7 @@ const sendVerificationEmail = async (options) => {
  * @param {string} options.resetUrl - Password reset URL
  * @returns {Promise<Object>} - Email send result
  */
-const sendPasswordResetEmail = async (options) => {
+const sendPasswordResetEmail = async options => {
   // Validate required fields
   if (!options.to) {
     throw new Error('Recipient email is required for password reset email');
@@ -517,11 +512,11 @@ const sendPasswordResetEmail = async (options) => {
   if (!options.resetUrl) {
     throw new Error('Reset URL is required for password reset email');
   }
-  
+
   // Load and compile template
   const template = loadTemplate('password-reset');
   const currentYear = new Date().getFullYear();
-  
+
   // Prepare template data
   const templateData = {
     firstName: options.firstName,
@@ -531,18 +526,18 @@ const sendPasswordResetEmail = async (options) => {
     termsUrl: options.termsUrl || 'https://litspark.com/terms',
     unsubscribeUrl: options.unsubscribeUrl || 'https://litspark.com/unsubscribe',
     company: options.company || 'LitSpark Brand Solutions',
-    currentYear
+    currentYear,
   };
-  
+
   // Compile template
   const html = compileTemplate(template, templateData);
-  
+
   // Send email
   return sendEmail({
     to: options.to,
     subject: 'Reset Your Password',
     html,
-    from: options.from
+    from: options.from,
   });
 };
 
@@ -554,7 +549,7 @@ const sendPasswordResetEmail = async (options) => {
  * @param {string} options.dashboardUrl - Dashboard URL
  * @returns {Promise<Object>} - Email send result
  */
-const sendWelcomeEmail = async (options) => {
+const sendWelcomeEmail = async options => {
   // Validate required fields
   if (!options.to) {
     throw new Error('Recipient email is required for welcome email');
@@ -565,11 +560,11 @@ const sendWelcomeEmail = async (options) => {
   if (!options.dashboardUrl) {
     throw new Error('Dashboard URL is required for welcome email');
   }
-  
+
   // Load and compile template
   const template = loadTemplate('welcome');
   const currentYear = new Date().getFullYear();
-  
+
   // Prepare template data
   const templateData = {
     firstName: options.firstName,
@@ -579,18 +574,18 @@ const sendWelcomeEmail = async (options) => {
     termsUrl: options.termsUrl || 'https://litspark.com/terms',
     unsubscribeUrl: options.unsubscribeUrl || 'https://litspark.com/unsubscribe',
     company: options.company || 'LitSpark Brand Solutions',
-    currentYear
+    currentYear,
   };
-  
+
   // Compile template
   const html = compileTemplate(template, templateData);
-  
+
   // Send email
   return sendEmail({
     to: options.to,
     subject: `Welcome to ${options.company || 'LitSpark Brand Solutions'}`,
     html,
-    from: options.from
+    from: options.from,
   });
 };
 
@@ -604,5 +599,5 @@ module.exports = {
   sendWelcomeEmail,
   createTransporter,
   htmlToText,
-  DEFAULT_TEMPLATE
+  DEFAULT_TEMPLATE,
 };
