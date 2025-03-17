@@ -36,12 +36,36 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     role: {
-      type: DataTypes.ENUM('admin', 'manager', 'staff'),
+      type: DataTypes.ENUM('admin', 'manager', 'staff', 'client'),
       defaultValue: 'staff'
     },
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
+    },
+    emailVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    emailVerificationToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    emailVerificationExpires: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    resetPasswordExpires: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     lastLogin: {
       type: DataTypes.DATE

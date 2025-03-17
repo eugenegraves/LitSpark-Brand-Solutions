@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Icon from '../atoms/Icon';
-import { breakpoints } from '../../styles/breakpoints';
+import { breakpoints } from '../../theme/breakpoints';
 
 // Alert variants with accessible color combinations
 const variants = {

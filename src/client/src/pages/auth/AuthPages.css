@@ -1,0 +1,98 @@
+/**
+ * Authentication Pages Styles
+ * 
+ * Styles for authentication pages that follow WCAG 2.1 AA standards.
+ * Uses the LitSpark brand colors (gold #F2BF0F and gray scale) with
+ * proper contrast ratios for accessibility.
+ */
+
+/* Auth Page */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #F8F9FA;
+  background-image: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+}
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #F2BF0F;
+  color: #212529;
+  padding: 8px 16px;
+  z-index: 100;
+  transition: top 0.3s;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(242, 191, 15, 0.5);
+}
+
+/* Auth Page Container */
+.auth-page-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Auth Page Content */
+.auth-page-content {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Auth Logo */
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.auth-logo img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .auth-page-container {
+    padding: 1rem;
+  }
+  
+  .auth-page-content {
+    gap: 1.5rem;
+  }
+}
+
+/* High Contrast Mode Adjustments */
+@media (forced-colors: active) {
+  .auth-page {
+    background-image: none;
+  }
+  
+  .skip-link:focus {
+    outline: 2px solid CanvasText;
+    box-shadow: none;
+  }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}

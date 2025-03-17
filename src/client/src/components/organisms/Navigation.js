@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { Link, NavLink } from 'react-router-dom';
 import Icon from '../atoms/Icon';
 import Button from '../atoms/Button';
-import { breakpoints } from '../../styles/breakpoints';
+import { breakpoints } from '../../theme/breakpoints';
 
 const NavContainer = styled.nav`
   display: flex;
@@ -432,9 +432,11 @@ const Navigation = ({
         ))}
         
         {actionButton && (
-          <ActionButton>
-            {actionButton}
-          </ActionButton>
+          <NavItem>
+            <ActionButton>
+              {actionButton}
+            </ActionButton>
+          </NavItem>
         )}
       </NavLinks>
     </NavContainer>

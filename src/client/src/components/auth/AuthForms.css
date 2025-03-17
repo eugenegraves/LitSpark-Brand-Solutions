@@ -1,0 +1,375 @@
+/**
+ * Authentication Forms Styles
+ * 
+ * Styles for authentication forms that follow WCAG 2.1 AA standards.
+ * Uses the LitSpark brand colors (gold #F2BF0F and gray scale) with
+ * proper contrast ratios for accessibility.
+ */
+
+/* Variables */
+:root {
+  /* Brand Colors */
+  --primary-gold: #F2BF0F;
+  --primary-gold-dark: #D9AB0D; /* Darker shade for hover states */
+  
+  /* Gray Scale */
+  --gray-100: #F8F9FA;
+  --gray-200: #E9ECEF;
+  --gray-300: #DEE2E6;
+  --gray-400: #CED4DA;
+  --gray-500: #ADB5BD;
+  --gray-600: #6C757D;
+  --gray-700: #495057;
+  --gray-800: #343A40;
+  --gray-900: #212529;
+  
+  /* Focus */
+  --focus-ring-color: rgba(242, 191, 15, 0.5);
+  --focus-ring-width: 0.25rem;
+  
+  /* Error */
+  --error-color: #DC3545;
+  --error-bg: #F8D7DA;
+  --error-border: #F5C6CB;
+  
+  /* Success */
+  --success-color: #28A745;
+  --success-bg: #D4EDDA;
+  --success-border: #C3E6CB;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --border-radius: 0.25rem;
+  
+  /* Transitions */
+  --transition-speed: 0.2s;
+}
+
+/* Container */
+.auth-form-container {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
+.auth-title {
+  margin-bottom: var(--spacing-lg);
+  color: var(--gray-900);
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Description */
+.auth-description {
+  margin-bottom: var(--spacing-lg);
+  color: var(--gray-700);
+  text-align: center;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Form Row (for side-by-side fields) */
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 576px) {
+  .form-row {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Form Group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-xs);
+}
+
+/* Form Label */
+.form-label {
+  color: var(--gray-800);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Form Input */
+.form-input {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--gray-400);
+  border-radius: var(--border-radius);
+  background-color: white;
+  color: var(--gray-900);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color var(--transition-speed) ease-in-out, 
+              box-shadow var(--transition-speed) ease-in-out;
+}
+
+.form-input:hover {
+  border-color: var(--gray-500);
+}
+
+.form-input:focus {
+  border-color: var(--primary-gold);
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+}
+
+.form-input:disabled {
+  background-color: var(--gray-200);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Input Error State */
+.input-error {
+  border-color: var(--error-color);
+}
+
+.input-error:focus {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 var(--focus-ring-width) rgba(220, 53, 69, 0.25);
+}
+
+/* Password Input Container */
+.password-input-container {
+  position: relative;
+  display: flex;
+}
+
+.password-input-container .form-input {
+  flex: 1;
+  padding-right: 4.5rem; /* Space for the toggle button */
+}
+
+/* Password Toggle Button */
+.password-toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 0 var(--spacing-md);
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--gray-300);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color var(--transition-speed) ease-in-out;
+}
+
+.password-toggle:hover {
+  color: var(--gray-800);
+}
+
+.password-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring-color);
+}
+
+/* Form Hint */
+.form-hint {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* Error Message */
+.error-message {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: var(--border-radius);
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* Success Message */
+.success-message {
+  padding: var(--spacing-md);
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: var(--border-radius);
+  color: var(--success-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Verification Message */
+.verification-message {
+  padding: var(--spacing-md);
+  background-color: var(--gray-200);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  color: var(--gray-700);
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  margin: var(--spacing-md) auto;
+  border: 0.25rem solid var(--gray-300);
+  border-top-color: var(--primary-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  transition: color var(--transition-speed) ease-in-out,
+              background-color var(--transition-speed) ease-in-out,
+              border-color var(--transition-speed) ease-in-out,
+              box-shadow var(--transition-speed) ease-in-out;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Primary Button - Gold */
+.btn-primary {
+  background-color: var(--primary-gold);
+  border-color: var(--primary-gold);
+  color: var(--gray-900); /* Dark text on gold for contrast */
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-gold-dark);
+  border-color: var(--primary-gold-dark);
+}
+
+.btn-primary:focus {
+  background-color: var(--primary-gold-dark);
+  border-color: var(--primary-gold-dark);
+}
+
+.btn-primary:active {
+  background-color: var(--primary-gold-dark);
+  border-color: var(--primary-gold-dark);
+}
+
+/* Secondary Button - Gray */
+.btn-secondary {
+  background-color: var(--gray-600);
+  border-color: var(--gray-600);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--gray-700);
+  border-color: var(--gray-700);
+}
+
+.btn-secondary:focus {
+  background-color: var(--gray-700);
+  border-color: var(--gray-700);
+}
+
+.btn-secondary:active {
+  background-color: var(--gray-700);
+  border-color: var(--gray-700);
+}
+
+/* Auth Links */
+.auth-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.auth-link {
+  color: var(--gray-800);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease-in-out;
+}
+
+.auth-link:hover {
+  color: var(--primary-gold);
+  text-decoration: underline;
+}
+
+.auth-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring-color);
+  border-radius: 2px;
+}
+
+.auth-separator {
+  color: var(--gray-400);
+}
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-gold);
+  color: var(--gray-900);
+  padding: var(--spacing-sm) var(--spacing-md);
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}

@@ -8,7 +8,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { breakpoints } from '../../styles/breakpoints';
+import { breakpoints } from '../../theme/breakpoints';
 
 const TabsContainer = styled.div`
   width: 100%;

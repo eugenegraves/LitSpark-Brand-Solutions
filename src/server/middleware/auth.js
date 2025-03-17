@@ -33,6 +33,11 @@ const isAuthenticated = async (req, res, next) => {
       return res.status(401).json({ message: 'User not found' });
     }
     
+    // Check if user is active
+    if (!user.active) {
+      return res.status(401).json({ message: 'Account is disabled' });
+    }
+    
     // Attach user to request object
     req.user = user;
     req.token = token;
@@ -52,7 +57,54 @@ const isAdmin = async (req, res, next) => {
     await isAuthenticated(req, res, () => {
       // Check if user is admin
       if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Admin access required' });
+        return res.status(403).json({ 
+          message: 'Admin access required',
+          error: 'You do not have permission to access this resource'
+        });
+      }
+      
+      next();
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+/**
+ * Middleware to check if user is a manager or admin
+ */
+const isManagerOrAdmin = async (req, res, next) => {
+  try {
+    // First check if user is authenticated
+    await isAuthenticated(req, res, () => {
+      // Check if user is manager or admin
+      if (req.user.role !== 'manager' && req.user.role !== 'admin') {
+        return res.status(403).json({ 
+          message: 'Manager access required',
+          error: 'You do not have permission to access this resource'
+        });
+      }
+      
+      next();
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+/**
+ * Middleware to check if user is a client
+ */
+const isClient = async (req, res, next) => {
+  try {
+    // First check if user is authenticated
+    await isAuthenticated(req, res, () => {
+      // Check if user is client
+      if (req.user.role !== 'client') {
+        return res.status(403).json({ 
+          message: 'Client access required',
+          error: 'You do not have permission to access this resource'
+        });
       }
       
       next();
@@ -74,7 +126,32 @@ const isOwnerOrAdmin = async (req, res, next) => {
         return next();
       }
       
-      res.status(403).json({ message: 'Unauthorized access' });
+      res.status(403).json({ 
+        message: 'Unauthorized access',
+        error: 'You do not have permission to access this resource'
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+/**
+ * Middleware to check if user has verified email
+ */
+const hasVerifiedEmail = async (req, res, next) => {
+  try {
+    // First check if user is authenticated
+    await isAuthenticated(req, res, () => {
+      // Check if user has verified email
+      if (!req.user.emailVerified) {
+        return res.status(403).json({ 
+          message: 'Email verification required',
+          error: 'Please verify your email before accessing this resource'
+        });
+      }
+      
+      next();
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -84,5 +161,8 @@ const isOwnerOrAdmin = async (req, res, next) => {
 module.exports = {
   isAuthenticated,
   isAdmin,
-  isOwnerOrAdmin
+  isManagerOrAdmin,
+  isClient,
+  isOwnerOrAdmin,
+  hasVerifiedEmail
 };

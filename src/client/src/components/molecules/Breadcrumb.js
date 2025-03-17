@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Icon from '../atoms/Icon';
-import { breakpoints } from '../../styles/breakpoints';
+import { breakpoints } from '../../theme/breakpoints';
 
 const BreadcrumbContainer = styled.nav`
   margin: 1rem 0;

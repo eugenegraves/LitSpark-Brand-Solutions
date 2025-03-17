@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { breakpoints } from './breakpoints';
 
 // LitSpark Brand Solutions theme with accessibility focus
 // Based on gray and gold color scheme that adheres to WCAG 2.1 standards
@@ -227,4 +228,5 @@ const theme = createTheme({
   ],
 });
 
+export { breakpoints };
 export default theme;
